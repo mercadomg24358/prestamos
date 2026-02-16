@@ -48,6 +48,11 @@ class ClientesManager {
         const clientes = this.obtenerClientes();
         return clientes.find(c => c.id === id);
     }
+
+    obtenerClientePorDNI(dni) {
+        const clientes = this.obtenerClientes();
+        return clientes.find(c => c.dni === dni);
+    }
 }
 
 const clientesManager = new ClientesManager();
@@ -348,4 +353,65 @@ function salir() {
         localStorage.clear();
         window.location.href = 'index.html';
     }
+}
+
+/**
+ * === 4. FUNCIONES PARA CAMBIAR MONTO EN PERFIL ===
+ */
+
+function abrirModalCambiarMonto() {
+    const modal = document.getElementById('modal-cambiar-monto');
+    if(modal) {
+        modal.classList.add('active');
+    }
+}
+
+function cerrarModalCambiarMonto() {
+    const modal = document.getElementById('modal-cambiar-monto');
+    if(modal) {
+        modal.classList.remove('active');
+    }
+    // Restaurar el valor anterior
+    const montoGuardado = parseInt(localStorage.getItem('montoSeleccionado')) || 1000000;
+    const sliderModal = document.getElementById('modal-monto-slider');
+    if(sliderModal) {
+        sliderModal.value = montoGuardado;
+    }
+}
+
+function confirmarCambioMonto() {
+    const sliderModal = document.getElementById('modal-monto-slider');
+    if(!sliderModal) return;
+
+    const nuevoMonto = parseInt(sliderModal.value);
+    const nuevaTarifa = Math.round(nuevoMonto * 0.05);
+    
+    // Guardar nuevo monto y tarifa en localStorage
+    localStorage.setItem('montoSeleccionado', nuevoMonto);
+    localStorage.setItem('tarifaCalculada', nuevaTarifa);
+    
+    // Actualizar el cliente en la BD
+    const dni = localStorage.getItem('dniUsuario');
+    if(dni) {
+        const cliente = clientesManager.obtenerClientePorDNI(dni);
+        if(cliente) {
+            clientesManager.actualizarCliente(cliente.id, { monto: nuevoMonto });
+        }
+    }
+    
+    // Actualizar todos los elementos que muestren el monto
+    document.querySelectorAll('.span-monto').forEach(el => {
+        el.innerText = nuevoMonto.toLocaleString('es-AR');
+    });
+    
+    // Actualizar todos los elementos que muestren la tarifa
+    document.querySelectorAll('.span-tarifa').forEach(el => {
+        el.innerText = nuevaTarifa.toLocaleString('es-AR');
+    });
+    
+    // Cerrar modal
+    cerrarModalCambiarMonto();
+    
+    // Mensaje de confirmación
+    alert(`Monto actualizado a: $${nuevoMonto.toLocaleString('es-AR')}`);
 }

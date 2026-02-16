@@ -190,6 +190,128 @@
             font-size: 0.65rem;
             font-weight: 700;
         }
+
+        /* Modal para cambiar monto */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 25px;
+            padding: 30px 25px;
+            max-width: 380px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .modal-slider {
+            width: 100%;
+            height: 10px;
+            border-radius: 10px;
+            background: #e2e8f0;
+            outline: none;
+            -webkit-appearance: none;
+            margin: 30px 0;
+        }
+
+        .modal-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            border: 4px solid white;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            background: white;
+            color: #64748b;
+            transition: all 0.2s;
+        }
+
+        .modal-btn:active {
+            transform: scale(0.95);
+        }
+
+        .modal-btn-confirm {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+
+        .modal-monto-display {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 15px 0;
+        }
+
+        .modal-tarifa-display {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin: 10px 0 20px;
+        }
+
+        .btn-cambiar-monto {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 16px;
+            margin: 20px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 700;
+            color: var(--primary);
+            transition: all 0.2s;
+        }
+
+        .btn-cambiar-monto:active {
+            background: #f8fafc;
+        }
     </style>
 </head>
 <body style="background: #f8fafc; margin: 0; font-family: sans-serif;">
@@ -207,7 +329,7 @@
                 <div class="wallet-balance">ARS$<span class="span-monto">0</span></div>
                 <div class="wallet-actions">
                     <button class="btn-action-wallet" onclick="window.location.href='estado.html'">Detalles</button>
-                    <button class="btn-action-wallet" onclick="window.location.href='acuerdo.html'">Acuerdo</button>
+                    <button class="btn-action-wallet" onclick="abrirModalCambiarMonto()">Cambiar</button>
                 </div>
             </div>
         </div>
@@ -249,6 +371,28 @@
 
     </div>
 
+    <!-- Modal para cambiar monto -->
+    <div class="modal-overlay" id="modal-cambiar-monto">
+        <div class="modal-content">
+            <div class="modal-header">Cambiar Monto del Préstamo</div>
+            
+            <div class="modal-monto-display">$<span id="modal-monto-preview">1.000.000</span></div>
+            <div class="modal-tarifa-display">Tarifa (5%): $<span id="modal-tarifa-preview">50.000</span></div>
+            
+            <input type="range" class="modal-slider" id="modal-monto-slider" min="1000000" max="8000000" step="100000" value="1000000">
+            
+            <div style="display: flex; justify-content: space-between; color: #94a3b8; font-size: 0.75rem; font-weight: 700; margin-top: 10px;">
+                <span>$1.000.000</span>
+                <span>$8.000.000</span>
+            </div>
+
+            <div class="modal-buttons">
+                <button class="modal-btn" onclick="cerrarModalCambiarMonto()">Cancelar</button>
+                <button class="modal-btn modal-btn-confirm" onclick="confirmarCambioMonto()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
     <script src="main.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -260,6 +404,29 @@
                 document.getElementById('txt-dni').innerText = dni;
             } else if(nombre) {
                 document.getElementById('txt-dni').innerText = nombre;
+            }
+
+            // Inicializar el slider del modal con el monto guardado
+            const montoGuardado = parseInt(localStorage.getItem('montoSeleccionado')) || 1000000;
+            const sliderModal = document.getElementById('modal-monto-slider');
+            if(sliderModal) {
+                sliderModal.value = montoGuardado;
+                const tarifa = Math.round(montoGuardado * 0.05);
+                document.getElementById('modal-monto-preview').innerText = montoGuardado.toLocaleString('es-AR');
+                document.getElementById('modal-tarifa-preview').innerText = tarifa.toLocaleString('es-AR');
+            }
+        });
+
+        // Actualizar preview en tiempo real
+        document.addEventListener('DOMContentLoaded', () => {
+            const sliderModal = document.getElementById('modal-monto-slider');
+            if(sliderModal) {
+                sliderModal.addEventListener('input', function() {
+                    const monto = parseInt(this.value);
+                    const tarifa = Math.round(monto * 0.05);
+                    document.getElementById('modal-monto-preview').innerText = monto.toLocaleString('es-AR');
+                    document.getElementById('modal-tarifa-preview').innerText = tarifa.toLocaleString('es-AR');
+                });
             }
         });
     </script>
