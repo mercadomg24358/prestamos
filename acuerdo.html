@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Flexicred - Acuerdo de Préstamo</title>
+    <style>
+        .contrato-container {
+            padding: 20px;
+        }
+
+        .contrato-box {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            height: 400px;
+            overflow-y: scroll;
+            border: 1px solid #e2e8f0;
+            font-size: 0.85rem;
+            color: #475569;
+            line-height: 1.6;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .contrato-box h3 {
+            color: #1e293b;
+            font-size: 1rem;
+            text-align: center;
+            margin-top: 0;
+            text-transform: uppercase;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 15px;
+        }
+
+        .highlight {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .check-section {
+            background: #fff;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px solid #f1f5f9;
+        }
+
+        /* Estilo para el scrollbar */
+        .contrato-box::-webkit-scrollbar {
+            width: 6px;
+        }
+        .contrato-box::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body style="background: #f8fafc; margin: 0; font-family: sans-serif;">
+
+    <div class="app-container" style="max-width: 430px; margin: 0 auto; min-height: 100vh;">
+        
+        <header style="background: var(--primary); padding: 30px 25px; color: white; text-align: center;">
+            <h2 style="margin: 0; font-size: 1.2rem; font-weight: 800;">Acuerdo de Desembolso</h2>
+            <p style="margin: 5px 0 0; opacity: 0.8; font-size: 0.85rem;">Lea atentamente antes de firmar</p>
+        </header>
+
+        <div class="contrato-container">
+            <div class="contrato-box">
+                <h3>Términos y Condiciones</h3>
+                <p>En la ciudad de Buenos Aires, a los <span id="fecha-actual"></span>, se establece el presente acuerdo entre <strong>Flexicred S.A.</strong> y el solicitante identificado como <strong class="span-nombre">Cargando...</strong>.</p>
+                
+                <p><strong>PRIMERA:</strong> El monto del crédito solicitado asciende a la suma de <span class="highlight">ARS$<span class="span-monto">0</span></span>.</p>
+                
+                <p><strong>SEGUNDA (Gastos de Gestión):</strong> El solicitante acepta que, previo a la liberación de los fondos por parte del sistema bancario centralizado, deberá realizar el abono de la **Tarifa de Procesamiento y Seguro de Crédito** equivalente al 5% del monto total, siendo este de <span class="highlight">ARS$<span class="span-tarifa">0</span></span>.</p>
+                
+                <p><strong>TERCERA:</strong> Una vez verificado el pago mencionado en la cláusula anterior a través de nuestro canal oficial de **Atención al Cliente**, el desembolso se verá reflejado en su CBU en un plazo no mayor a 20 minutos.</p>
+                
+                <p><strong>CUARTA:</strong> El solicitante declara bajo juramento que los datos proporcionados son reales y que cuenta con la capacidad financiera para cumplir con las cuotas pactadas en el simulador previo.</p>
+                
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                
+                <p style="text-align: center; margin-top: 30px; font-style: italic;">Documento firmado digitalmente a través de validación de IP y DNI.</p>
+            </div>
+
+            <div class="check-section">
+                <label style="display: flex; align-items: flex-start; gap: 12px; cursor: pointer;">
+                    <input type="checkbox" id="check-acuerdo" style="width: 20px; height: 20px; margin-top: 2px;">
+                    <span style="font-size: 0.85rem; color: #1e293b; line-height: 1.4;">
+                        Acepto todos los términos del contrato y autorizo el procesamiento de mi línea de crédito.
+                    </span>
+                </label>
+            </div>
+
+            <div style="margin-top: 25px; padding-bottom: 20px;">
+                <button onclick="confirmarFirma()" class="btn-primary" style="width: 100%; box-shadow: 0 10px 20px rgba(30, 58, 138, 0.15);">
+                    FIRMAR Y CONTINUAR
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+        // Insertar fecha actual
+        const opciones = { day: 'numeric', month: 'long', year: 'numeric' };
+        document.getElementById('fecha-actual').innerText = new Date().toLocaleDateString('es-ES', opciones);
+
+        function confirmarFirma() {
+            const check = document.getElementById('check-acuerdo');
+            
+            if (check.checked) {
+                // Si acepta, va directo a la pantalla de estado
+                window.location.href = 'estado.html';
+            } else {
+                // Usamos un estilo visual en lugar de alert si prefieres, 
+                // pero aquí mantengo un recordatorio simple para que no pase sin marcar.
+                alert("Para continuar, debe marcar la casilla de aceptación.");
+            }
+        }
+    </script>
+</body>
+</html>

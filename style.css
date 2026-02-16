@@ -1,0 +1,285 @@
+/* CONFIGURACIÓN DE COLORES Y VARIABLES */
+:root {
+    --primary: #1e3a8a;       /* Azul Institucional */
+    --secondary: #2563eb;     /* Azul Brillante para tarjetas */
+    --accent: #f97316;        /* Naranja para estados/alertas */
+    --success: #10b981;       /* Verde para aprobados */
+    --bg-light: #f8fafc;      /* Fondo de la app */
+    --text-main: #1e293b;     /* Gris oscuro para textos */
+    --text-muted: #64748b;    /* Gris claro para subtítulos */
+}
+
+/* RESET GENERAL */
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-main);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* CONTENEDOR MÓVIL (Simula App) */
+.app-container {
+    max-width: 430px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: var(--bg-light);
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* CABECERAS */
+header {
+    background: var(--primary);
+    color: white;
+}
+
+.brand-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-placeholder {
+    width: 35px;
+    height: 35px;
+    background: transparent;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Asegura que cualquier caja de logo muestre la imagen llenando el área sin bordes blancos */
+.logo-placeholder img,
+.logo-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: inherit;
+}
+
+.logo-box {
+    overflow: hidden;
+}
+
+/* TARJETAS DE CONTENIDO */
+.content-card {
+    background: white;
+    border-radius: 24px;
+    padding: 25px;
+    margin: 0 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    border: 1px solid #f1f5f9;
+}
+
+/* BOTONES */
+.btn-primary {
+    width: 100%;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 16px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+    background: #162d6d;
+}
+
+/* INPUTS */
+input[type="text"],
+input[type="number"],
+input[type="password"] {
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 12px;
+    border: 1.5px solid #e2e8f0;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(30, 58, 138, 0.08);
+}
+
+/* ELEMENTOS DINÁMICOS */
+.span-monto {
+    font-weight: 800;
+}
+
+.span-tarifa {
+    font-weight: 800;
+    color: #ef4444; /* Rojo para que resalte lo que deben pagar */
+}
+
+/* NAVEGACIÓN INFERIOR (TABS) */
+nav {
+    z-index: 1000;
+}
+
+.nav-item {
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.nav-item:active {
+    opacity: 0.6;
+}
+
+/* ANIMACIONES */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.content-card, .login-card, .loan-card {
+    animation: fadeInUp 0.4s ease-out;
+}
+
+/* ===== OPTIMIZACIONES PARA DISPOSITIVOS MÓVILES ===== */
+
+/* Pantallas muy pequeñas (320px - Iphone SE, etc) */
+@media (max-width: 375px) {
+    .app-container {
+        max-width: 100%;
+    }
+    
+    .login-header {
+        padding: 35px 15px 20px 15px;
+    }
+    
+    .login-card {
+        margin: 0 10px;
+        padding: 25px 15px;
+        border-radius: 20px;
+    }
+    
+    .input-field, .btn-primary, .btn-register {
+        font-size: 16px; /* Previene zoom automático en iOS */
+        padding: 14px;
+    }
+    
+    h1, h2, h3 {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+}
+
+/* Pantallas pequeñas (376px - 480px) */
+@media (max-width: 480px) {
+    .app-container {
+        max-width: 100%;
+    }
+    
+    body {
+        font-size: 14px;
+    }
+    
+    .action-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Pantallas medianas (481px - 600px) */
+@media (max-width: 600px) {
+    .app-container {
+        max-width: 100%;
+    }
+}
+
+/* Orientación de paisaje optimizada */
+@media (max-height: 500px) and (orientation: landscape) {
+    .login-header {
+        padding: 20px 20px 15px 20px;
+    }
+    
+    .login-card {
+        margin: 10px 20px;
+    }
+}
+
+/* Pantallas muy grandes (no usar) - evitar que se vea mal */
+@media (min-width: 431px) {
+    .app-container {
+        max-width: 430px;
+        margin: 0 auto;
+        border: 1px solid #e2e8f0;
+        height: 100vh;
+        overflow: hidden;
+    }
+}
+
+/* Optimizaciones de rendimiento para móviles */
+* {
+    -webkit-font-smoothing: antialiased;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+input, textarea, button {
+    -webkit-user-select: text;
+}
+
+/* Prevenir scroll horizontal en móviles */
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+/* Optimizar inputs para teclado virtual en móviles */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+textarea,
+select {
+    font-size: 16px; /* Previene zoom automático */
+    padding: 10px 12px;
+    -webkit-appearance: none; /* Quita estilos por defecto iOS */
+    appearance: none;
+    border-radius: 12px;
+}
+
+/* Quitarícono dropdown personalizado en selects para móviles */
+select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 20px;
+    padding-right: 35px;
+}
+
+/* Optimizar botones para móviles */
+button {
+    min-height: 48px; /* Tamaño mínimo recomendado por accesibilidad */
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* Prevenir parpadeos en móviles */
+body {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}

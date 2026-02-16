@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Flexicred - Paso 3</title>
+    <style>
+        input:-webkit-autofill { -webkit-box-shadow: 0 0 0px 1000px white inset !important; }
+        
+        .error-label { 
+            color: #ef4444; 
+            font-size: 0.75rem; 
+            font-weight: 700; 
+            margin-top: 5px; 
+            display: none; 
+        }
+
+        .input-container {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block; 
+            margin-bottom: 8px; 
+            font-weight: 700; 
+            color: #1e293b; 
+            font-size: 0.85rem; 
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body style="background: #f8fafc; margin: 0;">
+
+    <div class="app-container" style="max-width: 430px; margin: 0 auto;">
+        <header style="background: var(--primary); padding: 35px 25px 55px 25px;">
+            <div class="brand-container">
+                <div class="logo-placeholder">
+                    <img src="images/logo.png" alt="flexicred" onerror="this.parentElement.style.background='#fff'">
+                </div>
+                <h1 style="margin: 0; font-size: 1.6rem; font-weight: 800; color: white;">Flexicred</h1>
+            </div>
+            <p style="color: rgba(255,255,255,0.8); margin-top: 10px; font-size: 0.9rem;">Paso 3: Información de contacto</p>
+        </header>
+
+        <div class="content-card" style="margin-top: -35px;">
+            
+            <div class="input-container">
+                <label class="input-label">Correo Electrónico</label>
+                <input type="text" id="email-usuario" placeholder="ejemplo@correo.com" 
+                    style="width: 100%; padding: 16px; border-radius: 12px; border: 1px solid #e2e8f0; box-sizing: border-box; outline: none; font-size: 1rem;">
+                <div id="error-email" class="error-label">⚠️ Ingresa un correo electrónico válido</div>
+            </div>
+
+            <div class="input-container">
+                <label class="input-label">Número de Celular</label>
+                <input type="number" id="tel-usuario" placeholder="Cod. área + número" 
+                    style="width: 100%; padding: 16px; border-radius: 12px; border: 1px solid #e2e8f0; box-sizing: border-box; outline: none; font-size: 1rem;">
+                <div id="error-tel" class="error-label">⚠️ Ingresa tu número de contacto</div>
+            </div>
+
+            <p style="font-size: 0.8rem; color: #64748b; line-height: 1.5; margin-top: 10px;">
+                Hola <strong><span class="span-nombre">...</span></strong>, usaremos estos datos para enviarte el comprobante de transferencia de tus <strong>$8.000.000</strong>.
+            </p>
+        </div>
+
+        <div style="padding: 20px;">
+            <button class="btn-primary" onclick="validarPaso3()">Continuar</button>
+        </div>
+    </div>
+
+    <script>
+        function validarPaso3() {
+            const email = document.getElementById('email-usuario');
+            const tel = document.getElementById('tel-usuario');
+            const errEmail = document.getElementById('error-email');
+            const errTel = document.getElementById('error-tel');
+            
+            let esValido = true;
+
+            // Validación Email simple
+            if (!email.value.includes('@') || email.value.length < 5) {
+                email.style.borderColor = "#ef4444";
+                errEmail.style.display = "block";
+                esValido = false;
+            }
+
+            // Validación Teléfono
+            if (tel.value.length < 8) {
+                tel.style.borderColor = "#ef4444";
+                errTel.style.display = "block";
+                esValido = false;
+            }
+
+            if (esValido) {
+                localStorage.setItem('emailUsuario', email.value);
+                localStorage.setItem('telUsuario', tel.value);
+                window.location.href = 'paso4.html';
+            }
+        }
+
+        // Limpiar errores al escribir
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', function() {
+                this.style.borderColor = "#e2e8f0";
+                this.nextElementSibling.style.display = "none";
+            });
+        });
+    </script>
+    <script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Flexicred - Desembolso</title>
+</head>
+<body>
+    <div class="app-container">
+        <header style="background: var(--primary); padding: 40px 25px 60px 25px;">
+            <div class="brand-container" style="display: flex; align-items: center; gap: 15px;">
+                <div class="logo-placeholder" style="box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+                    <img src="images/logo.png" alt="flexicred" onerror="this.parentElement.style.background='#fff'">
+                </div>
+                <h1 style="margin: 0; font-size: 1.8rem; font-weight: 800; letter-spacing: -0.5px; color: white;">
+                    Flexicred
+                </h1>
+            </div>
+            <p style="opacity: 0.9; margin: 15px 0 0 0; font-size: 0.95rem; font-weight: 400;">
+                Paso 4: Cuenta de desembolso
+            </p>
+        </header>
+
+        <div class="content-card" style="margin-top: -35px; border: 1px solid rgba(0,0,0,0.05);">
+            <div style="background: #fff4e5; padding: 15px; border-radius: 16px; margin-bottom: 25px; border-left: 5px solid #f59e0b; display: flex; gap: 10px; align-items: center;">
+                <span style="font-size: 1.2rem;">⚠️</span>
+                <p style="font-size: 0.85rem; margin:0; color: #92400e; line-height: 1.4;">
+                    <b>Atención:</b> El CBU/CVU debe ser de tu titularidad para evitar rechazos.
+                </p>
+            </div>
+
+            <div class="form-group">
+                <label>CUIL / CUIT</label>
+                <input type="number" id="cuil" placeholder="20-XXXXXXXX-7">
+            </div>
+
+            <div class="form-group">
+                <label>CBU o CVU (22 dígitos)</label>
+                <input type="number" id="cbu" placeholder="00000031000XXXXXXXXX">
+            </div>
+
+            <div class="form-group">
+                <label>Banco o Billetera</label>
+                <input type="text" placeholder="Ej: Mercado Pago, Brubank, Galicia">
+            </div>
+
+            <hr style="margin: 30px 0; border: 0; border-top: 1px solid #e2e8f0;">
+
+            <h3 style="font-size: 0.9rem; font-weight: 700; color: #1e293b; margin: 20px 0 15px 0; text-transform: uppercase;">Crea tu Contraseña de Acceso</h3>
+
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" id="password" placeholder="Mínimo 6 caracteres" style="margin-bottom: 5px;">
+                <div id="error-password" style="color: #ef4444; font-size: 0.75rem; display: none;"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Repetir Contraseña</label>
+                <input type="password" id="password-confirm" placeholder="Confirma tu contraseña">
+                <div id="error-password-confirm" style="color: #ef4444; font-size: 0.75rem; display: none;"></div>
+            </div>
+        </div>
+
+        <button class="btn-primary" onclick="guardarDatosPaso(4)">Finalizar Solicitud</button>
+        
+        <p style="text-align: center; color: #94a3b8; font-size: 0.75rem; padding: 10px;">
+            Seguridad encriptada por Flexicred S.A.
+        </p>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Flexicred - Paso 1</title>
+    <style>
+        input:-webkit-autofill { -webkit-box-shadow: 0 0 0px 1000px white inset !important; }
+        .error-label { color: #ef4444; font-size: 0.75rem; font-weight: 700; margin-top: 5px; display: none; }
+    </style>
+</head>
+<body style="background: #f8fafc; margin: 0;">
+
+    <div class="app-container">
+        <header style="background: var(--primary); padding: 35px 25px 55px 25px;">
+            <div class="brand-container" style="display:flex; align-items:center; gap:12px;">
+                <div class="logo-placeholder" style="width:48px; height:48px; border-radius:10px; background:white; display:flex; align-items:center; justify-content:center;">
+                    <img src="images/logo.png" alt="flexicred" style="width:32px; height:32px; object-fit:contain;" onerror="this.parentElement.style.background='#fff'">
+                </div>
+                <h1 style="margin: 0; font-size: 1.6rem; font-weight: 800; color: white;">Flexicred</h1>
+            </div>
+            <p style="color: rgba(255,255,255,0.8); margin-top: 10px; font-size: 0.9rem;">Paso 1: Identificación</p>
+        </header>
+
+        <div class="content-card" style="margin-top: -35px;">
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 700; color: #1e293b; font-size: 0.85rem; text-transform: uppercase;">Nombre y Apellido completo</label>
+                <input type="text" id="nombre-completo" placeholder="Como figura en tu DNI" 
+                    style="width: 100%; padding: 16px; border-radius: 12px; border: 1px solid #e2e8f0; box-sizing: border-box; outline: none; font-size: 1rem;">
+                <div id="error-nombre" class="error-label">⚠️ Ingresa tu nombre para continuar</div>
+            </div>
+
+            <p style="font-size: 0.8rem; color: #64748b; line-height: 1.5;">
+                Iniciando solicitud para línea de crédito de libre destino hasta <strong>$8.000.000</strong>.
+            </p>
+        </div>
+
+        <div style="padding: 20px;">
+            <button class="btn-primary" onclick="validarPaso1()">Siguiente</button>
+        </div>
+    </div>
+
+    <script>
+        function validarPaso1() {
+            const input = document.getElementById('nombre-completo');
+            const error = document.getElementById('error-nombre');
+            
+            if (input.value.trim() === "") {
+                input.style.borderColor = "#ef4444";
+                error.style.display = "block";
+            } else {
+                localStorage.setItem('nombreUsuario', input.value.trim());
+                window.location.href = 'paso2.html';
+            }
+        }
+
+        document.getElementById('nombre-completo').addEventListener('input', function() {
+            this.style.borderColor = "#e2e8f0";
+            document.getElementById('error-nombre').style.display = "none";
+        });
+    </script>
+    <script src="main.js"></script>
+</body>
+</html>

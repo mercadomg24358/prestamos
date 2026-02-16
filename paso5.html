@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Flexicred - Configurar Préstamo</title>
+    <style>
+        /* Evita que los navegadores pongan fondos amarillos en inputs */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus {
+            -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        /* Contenedor principal para mantener todo centrado y limpio */
+        .content-card {
+            background: #ffffff !important;
+            border-radius: 32px;
+            padding: 35px 25px;
+            margin: -45px 20px 0 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.07);
+            border: 1px solid #f1f5f9;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Estilo personalizado del Slider */
+        .slider-container {
+            margin: 45px 0 35px 0;
+            padding: 0 10px;
+        }
+
+        input[type=range] {
+            width: 100%;
+            height: 10px;
+            border-radius: 10px;
+            background: #e2e8f0;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            border: 5px solid white;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+            transition: transform 0.2s ease;
+        }
+
+        input[type=range]::-webkit-slider-thumb:active {
+            transform: scale(1.15);
+        }
+
+        /* Grilla de información de costos */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .info-box {
+            background: #f8fafc;
+            padding: 18px 15px;
+            border-radius: 24px;
+            border: 1px solid #f1f5f9;
+        }
+
+        .label-small {
+            display: block;
+            font-size: 0.65rem;
+            color: #94a3b8;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .value-bold {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #1e293b;
+        }
+
+        .tarifa-highlight {
+            color: #ef4444 !important; /* Rojo para el 5% de gestión */
+        }
+
+        /* Animación de los números al mover el slider */
+        #display-monto, #display-tarifa {
+            transition: all 0.1s ease;
+        }
+    </style>
+</head>
+<body style="background: #f8fafc; margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+
+    <div class="app-container" style="max-width: 430px; margin: 0 auto; min-height: 100vh;">
+        
+        <header style="background: var(--primary); padding: 50px 25px 90px 25px; border-radius: 0 0 45px 45px;">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div style="width: 48px; height: 48px; background: transparent; border-radius: 14px; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                    <img src="images/logo.png" alt="flexicred" style="width: 32px; height:32px; object-fit:cover;" onerror="this.parentElement.innerHTML='<b style=\'color:var(--primary)\'>F</b>'">
+                </div>
+                <div>
+                    <h1 style="margin: 0; font-size: 1.5rem; font-weight: 800; color: white; letter-spacing: -0.5px;">Monto de Crédito</h1>
+                    <p style="color: rgba(255,255,255,0.75); font-size: 0.85rem; margin: 0;">Selecciona el capital a acreditar</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="content-card">
+            <div style="text-align: center;">
+                <span style="background: #dcfce7; color: #166534; padding: 7px 16px; border-radius: 14px; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; display: inline-block;">
+                    CUPO MÁXIMO: $8.000.000
+                </span>
+
+                <div style="margin: 35px 0;">
+                    <h2 style="font-size: 3rem; font-weight: 900; color: #0f172a; margin: 0; letter-spacing: -1.5px;">
+                        $<span id="display-monto">1.000.000</span>
+                    </h2>
+                    <p style="color: #64748b; font-size: 0.9rem; margin-top: 8px; font-weight: 500;">Dinero neto que recibirá en su cuenta</p>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <input type="range" id="monto-range" min="1000000" max="8000000" step="100000" value="1000000">
+                <div style="display: flex; justify-content: space-between; margin-top: 15px; color: #94a3b8; font-size: 0.75rem; font-weight: 700;">
+                    <span>$1.000.000</span>
+                    <span>$8.000.000</span>
+                </div>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-box">
+                    <span class="label-small">Gastos Gestión (5%)</span>
+                    <span class="value-bold tarifa-highlight">$<span id="display-tarifa">50.000</span></span>
+                </div>
+                <div class="info-box" style="text-align: right;">
+                    <span class="label-small">Plazo de Devolución</span>
+                    <span class="value-bold">180 Días</span>
+                </div>
+                <div class="info-box" style="grid-column: span 2; display: flex; justify-content: space-between; align-items: center; background: #f0fdf4; border-color: #dcfce7;">
+                    <span class="label-small" style="margin:0; color: #166534;">Interés Anual (TNA)</span>
+                    <span class="value-bold" style="color: #10b981;">0.0% BONIFICADO</span>
+                </div>
+            </div>
+        </div>
+
+        <div style="padding: 35px 20px;">
+            <button class="btn-primary" onclick="window.location.href='acuerdo.html'" style="width: 100%; padding: 20px; border-radius: 22px; border: none; background: var(--primary); color: white; font-size: 1.15rem; font-weight: 800; cursor: pointer; box-shadow: 0 12px 24px rgba(0,0,0,0.12); transition: transform 0.2s;">
+                Confirmar y Ver Acuerdo
+            </button>
+            
+            <div style="text-align: center; color: #94a3b8; font-size: 0.8rem; margin-top: 25px; display: flex; justify-content: center; align-items: center; gap: 8px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <span>Transferencia segura vía COELSA</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

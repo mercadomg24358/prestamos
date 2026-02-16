@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Flexicred - Referencias</title>
+    <style>
+        /* HEADER FIJO (Sticky) */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--primary);
+            padding: 20px 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .comment-card {
+            background: white;
+            padding: 20px;
+            border-radius: 24px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            border: 1px solid #f1f5f9;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .avatar-sm {
+            width: 42px; height: 42px; border-radius: 14px;
+            display: flex; justify-content: center; align-items: center;
+            font-weight: 800; font-size: 0.9rem; color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .badge-verif {
+            font-size: 0.6rem; background: #dcfce7; color: #166534;
+            padding: 2px 8px; border-radius: 10px; font-weight: 800;
+            display: inline-flex; align-items: center; gap: 3px;
+        }
+
+        #scroll-area { 
+            padding: 20px 15px 140px 15px; 
+        }
+
+        .processing-text {
+            text-align: center; font-size: 0.85rem; color: var(--primary);
+            font-weight: 700; margin-bottom: 10px; display: none;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+
+        /* Ocultar scrollbar para estética de App */
+        body::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body style="background: #f8fafc; margin: 0;">
+
+    <div class="app-container">
+        <header>
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div class="brand-container" style="display: flex; align-items: center; gap: 10px;">
+                    <div class="logo-placeholder" style="width: 35px; height: 35px; background: transparent; border-radius: 8px; display: flex; justify-content: center; align-items: center; overflow:hidden;">
+                        <img src="images/logo.png" alt="flexicred" style="width: 100%; height:100%; object-fit:cover;" onerror="this.parentElement.style.background='#fff'">
+                    </div>
+                    <h1 style="margin: 0; font-size: 1.3rem; font-weight: 800; color: white;">Referencias de Clientes</h1>
+                </div>
+                <button onclick="history.back()" style="background: rgba(255,255,255,0.2); border: none; color: white; width: 35px; height: 35px; border-radius: 10px; cursor: pointer; font-weight: bold;">✕</button>
+            </div>
+            <div style="margin-top: 10px; display: flex; gap: 8px; align-items: center;">
+                <div style="width: 7px; height: 7px; background: #10b981; border-radius: 50%; box-shadow: 0 0 5px #10b981;"></div>
+                <span style="font-size: 0.75rem; color: white; opacity: 0.9;">1.240 usuarios activos ahora</span>
+            </div>
+        </header>
+
+        <div id="scroll-area">
+            <div id="container-comentarios"></div>
+            
+            <div style="text-align: center; padding: 20px;">
+                <p style="color: #94a3b8; font-size: 0.8rem;">Has llegado al final de las actualizaciones recientes</p>
+            </div>
+        </div>
+
+        <div style="position: fixed; bottom: 0; width: 100%; max-width: 430px; background: white; padding: 15px 20px 25px 20px; border-top: 1px solid #f1f5f9; box-sizing: border-box; border-radius: 30px 30px 0 0; box-shadow: 0 -10px 25px rgba(0,0,0,0.05);">
+            <div id="status-envio" class="processing-text">⏳ Procesando comentario...</div>
+            <div style="display: flex; gap: 12px; align-items: center;">
+                <input type="text" id="input-comentario" placeholder="Cuéntanos tu experiencia..." 
+                       style="margin: 0; background: #f1f5f9; border: none; padding: 14px 20px; border-radius: 20px; flex-grow: 1; outline: none; font-size: 0.95rem;">
+                <button onclick="enviarComentario()" id="btn-enviar" 
+                        style="background: var(--primary); color: white; border: none; width: 50px; height: 50px; border-radius: 18px; cursor: pointer; display: flex; justify-content: center; align-items: center;">
+                    <span style="font-size: 1.3rem; transform: rotate(-45deg); margin-left: 4px;">➤</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DATOS MAESTROS (Casos de éxito coherentes con 5% y 8 Millones)
+        const testimoniosBase = [
+            {n: "Ricardo Pereyra", t: "Justo ahora", c: "Dudé un poco por lo del 5% de gestión, pero hablé con soporte y me explicaron que es por el sellado. Pagué y a los 10 minutos tenía los $850.000 en Brubank. Excelentes.", col: "#1e40af"},
+            {n: "Hugo Gimenez", t: "Hace 12 min", c: "Impresionante. Saqué 5 millones para terminar la obra en casa. Pagué el gasto administrativo del 5% y se acreditó en el acto. Cero vueltas.", col: "#0f172a"},
+            {n: "Silvia Rodriguez", t: "Hace 28 min", c: "Tenía miedo por el Veraz pero Flexicred cumple. Pagué el sellado y ya tengo el préstamo aprobado y depositado. Los recomiendo.", col: "#9333ea"},
+            {n: "Oscar Castro", t: "Hace 45 min", c: "Pedí los 8 millones para cambiar el auto. El sellado del 5% es lo que corresponde por ley. Una vez que pagué, el desembolso fue inmediato. ¡Gracias!", col: "#ea580c"},
+            {n: "Mabel Sosa", t: "Hace 1 hora", c: "Muy buena la atención. Me guiaron para pagar la tasa del 5% y el dinero me llegó a Mercado Pago en menos de 15 minutos.", col: "#db2777"}
+        ];
+
+        const frasesRelleno = [
+            "Excelente servicio, pagué el 5% de gestión y recibí los fondos rápido.",
+            "Ya tengo el crédito acreditado. El 5% se paga una sola vez y listo.",
+            "Muy confiables. La tasa del 5% es justa por la rapidez que tienen.",
+            "Acreditado apenas envié el comprobante del 5% del sellado. Gracias!",
+            "Todo legal y bajo contrato. El 5% es tal cual dice el acuerdo digital.",
+            "Me salvaron el mes. El depósito llegó al toque después de pagar la gestión del 5%.",
+            "Lo recomiendo 100%. Cumplen con lo pactado apenas cubres los gastos."
+        ];
+
+        const nombresRandom = ["Vanesa", "Damián", "Patricia", "Julián", "Esteban", "Paola", "Ignacio", "Sofía", "Gastón", "Mónica", "Fernando", "Claudio", "Sandra", "Lucas", "Lorena", "Enzo", "Karina", "Raúl", "Daniela"];
+
+        // GENERAR HASTA 60
+        let testimoniosCompletos = [...testimoniosBase];
+        while(testimoniosCompletos.length < 60) {
+            const nom = nombresRandom[Math.floor(Math.random()*nombresRandom.length)] + " " + "L.";
+            const time = "Hace " + Math.floor(testimoniosCompletos.length / 2) + "h";
+            testimoniosCompletos.push({
+                n: nom, 
+                t: time, 
+                c: frasesRelleno[Math.floor(Math.random()*frasesRelleno.length)], 
+                col: "#" + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0')
+            });
+        }
+
+        // RENDERIZADO
+        const container = document.getElementById('container-comentarios');
+        testimoniosCompletos.forEach(d => {
+            container.innerHTML += `
+                <div class="comment-card">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div style="display: flex; gap: 12px; align-items: center;">
+                            <div class="avatar-sm" style="background:${d.col}">${d.n[0]}</div>
+                            <div>
+                                <p style="margin: 0; font-weight: 800; font-size: 0.9rem; color: #1e293b;">
+                                    ${d.n} <span class="badge-verif">✓ Verificado</span>
+                                </p>
+                                <small style="color: #94a3b8; font-weight: 500;">${d.t}</small>
+                            </div>
+                        </div>
+                        <div style="color: #f59e0b; font-size: 0.7rem;">⭐⭐⭐⭐⭐</div>
+                    </div>
+                    <p style="margin: 12px 0 0 0; font-size: 0.88rem; color: #475569; line-height: 1.6;">${d.c}</p>
+                </div>`;
+        });
+
+        // LÓGICA DE ENVÍO SIMULADO
+        function enviarComentario() {
+            const input = document.getElementById('input-comentario');
+            const status = document.getElementById('status-envio');
+            const btn = document.getElementById('btn-enviar');
+
+            if (input.value.trim() === "") return;
+
+            input.disabled = true;
+            btn.disabled = true;
+            status.style.display = "block";
+
+            setTimeout(() => {
+                status.innerHTML = "✅ Comentario enviado a revisión";
+                status.style.color = "#10b981";
+                input.value = "";
+                
+                setTimeout(() => {
+                    status.style.display = "none";
+                    status.innerHTML = "⏳ Procesando comentario...";
+                    status.style.color = "var(--primary)";
+                    input.disabled = false;
+                    btn.disabled = false;
+                }, 2500);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

